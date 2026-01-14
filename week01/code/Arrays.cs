@@ -8,12 +8,21 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // PLAN:
+        // 1) Create a double array of size 'length' to hold the multiples.
+        // 2) Loop from i = 0 to i = length - 1.
+        // 3) The value at index i should be the (i+1)th multiple of 'number':
+        //       result[i] = number * (i + 1)
+        // 4) Return the filled array.
 
-        return []; // replace this return statement with your own
+        var result = new double[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            result[i] = number * (i + 1);
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -25,9 +34,23 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // PLAN:
+        // 1) Rotating right by 'amount' means the last 'amount' items move to the front.
+        // 2) Find the index where the last 'amount' items start:
+        //       tailStart = data.Count - amount
+        // 3) Split the list into two slices:
+        //       tail = data.GetRange(tailStart, amount)
+        //       head = data.GetRange(0, tailStart)
+        // 4) Clear the original list (we must modify it in place).
+        // 5) Add the tail first, then the head, to rebuild the list in rotated order.
+
+        int tailStart = data.Count - amount;
+
+        var tail = data.GetRange(tailStart, amount);
+        var head = data.GetRange(0, tailStart);
+
+        data.Clear();
+        data.AddRange(tail);
+        data.AddRange(head);
     }
 }
