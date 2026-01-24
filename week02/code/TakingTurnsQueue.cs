@@ -31,25 +31,30 @@ public class TakingTurnsQueue
     /// person has an infinite number of turns.  An error exception is thrown 
     /// if the queue is empty.
     /// </summary>
-    public Person GetNextPerson()
+  public Person GetNextPerson()
+{
+    if (_people.IsEmpty())
     {
-        if (_people.IsEmpty())
-        {
-            throw new InvalidOperationException("No one in the queue.");
-        }
-        else
-        {
-            Person person = _people.Dequeue();
-            if (person.Turns > 1)
-            {
-                person.Turns -= 1;
-                _people.Enqueue(person);
-            }
-
-            return person;
-        }
+        throw new InvalidOperationException("No one in the queue.");
     }
 
+    Person person = _people.Dequeue();
+
+    // Infinite turns: 0 or less means they always go back in the queue
+    if (person.Turns <= 0)
+    {
+        _people.Enqueue(person);
+    }
+    // Finite turns: decrement and re-enqueue only if they still have turns left
+    else if (person.Turns > 1)
+    {
+        person.Turns -= 1;
+        _people.Enqueue(person);
+    }
+    // else: turns == 1 => last turn, do not re-enqueue
+
+    return person;
+}
     public override string ToString()
     {
         return _people.ToString();
